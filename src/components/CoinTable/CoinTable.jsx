@@ -1,29 +1,25 @@
-import { fetchCoinData } from '../../Services/fetchCoinData';
-import { useState } from 'react';
-import { useQuery } from "@tanstack/react-query";
-import currencyStore from '../../state/store';
-import { useNavigate } from 'react-router-dom';
+import useFetchCoinTable from '../../hooks/useFetchCoinTable';
 import PageLoader from '../PageLoader/PageLoader'
+import Alert from '../Alert/Alert';
 
 function CoinTable() {
 
-  const { currency } = currencyStore();
-  const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error, isFetching } = useQuery({
-    queryKey: ['coins', page, currency],
-    queryFn: () => fetchCoinData(page, currency),
-    retry: 3,
-    retryDelay: 1000,
-    gcTime: 2 * 60 * 1000,
-    staleTime: 2 * 60 * 1000,
-  });
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    currency,
+    navigate,
+    page,
+    setPage
+  } = useFetchCoinTable();
 
   function handleCoinRedirect(id) {
     navigate(`/details/${id}`);
   }
 
-  if (isError) { return <div className='text-center text-red-500'>Error: {error.message}</div>; }
+  if (isError) { return <Alert message="Error loading Data" type="error" /> }
   if (isLoading) { return <PageLoader /> }
 
   return (

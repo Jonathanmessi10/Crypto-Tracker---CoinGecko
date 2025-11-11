@@ -1,35 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { fetchCoinDetails } from "../Services/fetchCoinDetails";
 import parse from 'html-react-parser';
-import currencyStore from '../state/store';
 import PageLoader from '../components/PageLoader/PageLoader';
+import CoinInfoContainer from "../components/CoinInfo/CoinInfoContainer";
+import useFetchCoin from "../hooks/useFetchCoin";
 
 function CoinDetailsPage() {
 
-    const { currency } = currencyStore();
     const { coinId } = useParams();
 
-    const { isError, isLoading, data: coin, error } = useQuery({
-        queryKey: ['coins', coinId],
-        queryFn: () => fetchCoinDetails(coinId),
-        retry: 1,
-        retryDelay: 1000,
-        gcTime: 2 * 60 * 1000,
-        staleTime: 2 * 60 * 1000,
-    })
-
-
+    const {currency,isError,isLoading,coin} = useFetchCoin(coinId);
 
     if (isLoading) {
-        return <PageLoader />
+        return  <PageLoader /> 
     }
 
     if (isError) {
-        return <div className='text-center text-red-500'>Error: {error.message}</div>;
+        return <Alert message="Error loading Data" type="error" />
     }
-
-
 
     return (
         <div className="flex flex-col md:flex-row">
@@ -68,8 +55,8 @@ function CoinDetailsPage() {
 
             </div>
 
-            <div className="md:w-1/2 w-full p-6 ">
-                Coin Info
+            <div className="w-full md:w-3/4 p-2 ">
+                <CoinInfoContainer coinId={coinId} />
             </div>
 
         </div>
