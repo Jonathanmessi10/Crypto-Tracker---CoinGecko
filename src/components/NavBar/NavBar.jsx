@@ -1,4 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+import currencyStore from '../../state/store';
+
 function NavBar() {
+    const { setCurrency } = currencyStore();
+    const navigate = useNavigate();
+
+    function goToHome() {
+        navigate("/");
+    }
+
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -20,12 +30,12 @@ function NavBar() {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><a>INR</a></li>
-                        <li><a>USD</a></li>
+                        <li><button onClick={() => setCurrency("inr")}>INR ₹</button></li>
+                        <li><button onClick={() => setCurrency("usd")}>USD $</button></li>
                     </ul>
                 </div>
             </div>
-            <div className="navbar-center">
+            <div onClick={goToHome} className="navbar-center">
                 <a className="btn btn-ghost text-xl">Crypto Tracker</a>
             </div>
             <div className="navbar-end">

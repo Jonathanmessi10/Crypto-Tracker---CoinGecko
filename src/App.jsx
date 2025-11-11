@@ -1,17 +1,9 @@
-import CoinTable from './components/CoinTable/CoinTable.jsx';
-
-import './App.css'
-import NavBar from './components/NavBar/NavBar.jsx';
-import Banner from './components/Banner/Banner.jsx';
+import Routing from "./components/Routing/Routing";
 
 function App() {
-
-
-  return (
+return (
     <>
-      <NavBar />
-      <Banner />
-      <CoinTable />
+      <Routing />
     </>
   );
 
